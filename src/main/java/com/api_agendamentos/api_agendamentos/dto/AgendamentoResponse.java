@@ -8,8 +8,8 @@ public record AgendamentoResponse(
 		Long id,
 		String titulo,
 		String descricao,
-		String datainicio,
-		String datafim,
+		LocalDateTime datainicio,
+		LocalDateTime datafim,
 		StatusAgendamentos status,
 		String usuario,
 		LocalDateTime criadoEm,
@@ -17,3 +17,4 @@ public record AgendamentoResponse(
 ) {
 
 }
+
