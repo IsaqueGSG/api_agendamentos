@@ -10,9 +10,11 @@ import com.api_agendamentos.api_agendamentos.repository.AgendamentoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+@Service
 public class AgendamentoService {
 
     private final AgendamentoRepository repository;
@@ -48,6 +50,23 @@ public class AgendamentoService {
     }
 
     @Transactional
+    public AgendamentoResponse concluir(Long id ){
+        Agendamento entity = repository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Agendamento nao encontrado"));
+
+        entity.setStatus( StatusAgendamentos.CONCLUIDO );
+        entity = repository.save(entity);
+        return AgendamentoMapper.toResponse(entity);
+    }
+
+    @Transactional
+    public AgendamentoResponse buscarPorId(Long id ){
+        Agendamento entity = repository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Agendamento nao encontrado"));
+        return AgendamentoMapper.toResponse(entity);
+    }
+
+    @Transactional
     public AgendamentoResponse cancelar(Long id ){
         Agendamento entity = repository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("Agendamento nao encontrado"));
@@ -60,8 +79,8 @@ public class AgendamentoService {
 
 
     private void validarIntervalo(LocalDateTime inicio, LocalDateTime fim){
-        if(inicio == null || fim == null || inicio.isBefore(fim) ) {
-            throw new IllegalArgumentException("Intervalo de de datas invalidos");
+        if(inicio == null || fim == null || inicio.isAfter(fim)) {
+            throw new IllegalArgumentException("A data de início deve ser anterior à data de fim");
         }
     }
 
