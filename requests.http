@@ -1,12 +1,66 @@
-###
-
-POST http://localhost:8080/api/agendamentos
+### Cadastrar um Usuário Professor
+POST http://localhost:8080/api/usuarios
 Content-Type: application/json
 
 {
-  "titulo" : "Reunião Sprint 2",
-  "descricao" : "teste",
-  "dataInicio" : "2025-10-26T16:02:00",
-  "dataFim" : "2025-10-26T20:00:00",
-  "usuario" : "isaque"
+  "nome": "Prof. Giovani",
+  "email": "giovani@ifsp.edu.br",
+  "senha": "senha123segura",
+  "perfil": "PROFESSOR"
+}
+
+### Cadastrar um Aluno
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Isaque Aluno",
+  "email": "isaque@aluno.ifsp.edu.br",
+  "senha": "senha123segura",
+  "perfil": "ALUNO"
+}
+
+### Cadastrar uma Sala de Estudo
+POST http://localhost:8080/api/espacos
+Content-Type: application/json
+
+{
+  "nome": "Sala de Estudo 01",
+  "tipo": "SALA_ESTUDO",
+  "capacidade": 6,
+  "recursos": "Quadro branco, tomada"
+}
+
+### Cadastrar um Laboratório
+POST http://localhost:8080/api/espacos
+Content-Type: application/json
+
+{
+  "nome": "Laboratório de Informática 02",
+  "tipo": "LABORATORIO",
+  "capacidade": 30,
+  "recursos": "Computadores, projetor"
+}
+
+### Aluno reservando Sala de Estudo por 2 horas
+POST http://localhost:8080/api/reservas/avulsa
+Content-Type: application/json
+
+{
+  "usuarioId": 2,
+  "espacoId": 1,
+  "dataInicio": "2026-10-20T14:00:00",
+  "dataFim": "2026-10-20T16:00:00"
+}
+
+### Aluno tentando reservar Laboratório
+# Erro
+POST http://localhost:8080/api/reservas/avulsa
+Content-Type: application/json
+
+{
+  "usuarioId": 2,
+  "espacoId": 2,
+  "dataInicio": "2026-10-20T14:00:00",
+  "dataFim": "2026-10-20T16:00:00"
 }
