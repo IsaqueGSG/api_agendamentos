@@ -73,3 +73,15 @@ Content-Type: application/json
   "inicio": "2026-10-20T14:00:00",
   "fim": "2026-10-20T16:00:00"
 }
+
+### Professor criando Reserva Recorrente
+POST http://localhost:8080/api/reservas/recorrente
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "espacoId": 2,
+  "dataInicio": "2026-11-03T19:00:00",
+  "dataFim": "2026-11-03T21:00:00",
+  "dataLimite": "2026-12-03T21:00:00"
+}
