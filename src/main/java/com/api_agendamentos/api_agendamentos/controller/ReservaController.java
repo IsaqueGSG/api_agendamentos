@@ -1,5 +1,6 @@
 package com.api_agendamentos.api_agendamentos.controller;
 
+import com.api_agendamentos.api_agendamentos.dto.CancelarOcorrenciaRequest;
 import com.api_agendamentos.api_agendamentos.dto.ReservaAvulsaRequest;
 import com.api_agendamentos.api_agendamentos.dto.ReservaRecorrenteRequest;
 import com.api_agendamentos.api_agendamentos.entity.Ocorrencia;
@@ -41,4 +42,14 @@ public class ReservaController {
                 req.dataLimite()
         );
     }
+
+    @PostMapping("/ocorrencias/cancelar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cancelarOcorrencia(@Valid @RequestBody CancelarOcorrenciaRequest req) {
+        service.cancelarOcorrencia(
+                req.ocorrenciaId(),
+                req.usuarioId()
+        );
+    }
+
 }

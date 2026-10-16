@@ -155,4 +155,33 @@ public class ReservaService {
 
         return ocorrenciasSalvas;
     }
+
+    @Transactional
+    public void cancelarOcorrencia(Long ocorrenciaId, Long usuarioId) {
+        Ocorrencia ocorrencia = ocorrenciaRepository.findById(ocorrenciaId)
+                .orElseThrow(() -> new RuntimeException("Ocorrência não encontrada"));
+
+        Usuario usuarioReq = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        // Validação
+        boolean ehDono = ocorrencia.getReserva().getUsuario().getId().equals(usuarioId);
+        boolean ehGestor = usuarioReq.getPerfil() == PerfilUsuario.GESTOR;
+
+        if (!ehDono && !ehGestor) {
+            throw new IllegalArgumentException("Você não tem permissão para cancelar esta reserva.");
+        }
+
+        if (ocorrencia.getStatus() == StatusOcorrencia.CANCELADO) {
+            throw new IllegalArgumentException("Esta reserva já está cancelada.");
+        }
+
+        if (ocorrencia.getStatus() == StatusOcorrencia.CONCLUIDO || ocorrencia.getStatus() == StatusOcorrencia.FALTA) {
+            throw new IllegalArgumentException("Não é possível cancelar uma reserva que já ocorreu.");
+        }
+
+        // Altera o status para CANCELADO
+        ocorrencia.setStatus(StatusOcorrencia.CANCELADO);
+        ocorrenciaRepository.save(ocorrencia);
+    }
 }

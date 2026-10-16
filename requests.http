@@ -85,3 +85,12 @@ Content-Type: application/json
   "dataFim": "2026-11-03T21:00:00",
   "dataLimite": "2026-12-03T21:00:00"
 }
+
+### Cancelar uma ocorrência enviando
+POST http://localhost:8080/api/reservas/ocorrencias/cancelar
+Content-Type: application/json
+
+{
+  "ocorrenciaId": 2,
+  "usuarioId": 1
+}
