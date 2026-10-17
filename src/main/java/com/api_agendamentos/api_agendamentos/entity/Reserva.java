@@ -29,7 +29,7 @@ public class Reserva {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private StatusOcorrencia status; // Pode manter o Enum StatusOcorrencia ou renomear se preferir
+    private StatusReserva status; // Pode manter o Enum StatusOcorrencia ou renomear se preferir
 
     @Column(name = "check_in_realizado", nullable = false)
     private boolean checkInRealizado = false;

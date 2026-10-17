@@ -39,7 +39,7 @@ public class ReservaService {
                 .espaco(espaco)
                 .dataInicio(inicio)
                 .dataFim(fim)
-                .status(StatusOcorrencia.AGENDADO)
+                .status(StatusReserva.AGENDADO)
                 .recorrente(false)
                 .statusAprovacao("APROVADO")
                 .criadoEm(LocalDateTime.now())
@@ -87,7 +87,7 @@ public class ReservaService {
                     .espaco(espaco)
                     .dataInicio(par[0])
                     .dataFim(par[1])
-                    .status(StatusOcorrencia.AGENDADO)
+                    .status(StatusReserva.AGENDADO)
                     .recorrente(true)
                     .statusAprovacao("APROVADO")
                     .criadoEm(LocalDateTime.now())
@@ -112,15 +112,15 @@ public class ReservaService {
             throw new IllegalArgumentException("Você não tem permissão para cancelar esta reserva.");
         }
 
-        if (reserva.getStatus() == StatusOcorrencia.CANCELADO) {
+        if (reserva.getStatus() == StatusReserva.CANCELADO) {
             throw new IllegalArgumentException("Esta reserva já está cancelada.");
         }
 
-        if (reserva.getStatus() == StatusOcorrencia.CONCLUIDO || reserva.getStatus() == StatusOcorrencia.FALTA) {
+        if (reserva.getStatus() == StatusReserva.CONCLUIDO || reserva.getStatus() == StatusReserva.FALTA) {
             throw new IllegalArgumentException("Não é possível cancelar uma reserva que já ocorreu.");
         }
 
-        reserva.setStatus(StatusOcorrencia.CANCELADO);
+        reserva.setStatus(StatusReserva.CANCELADO);
         reservaRepository.save(reserva);
     }
 
@@ -134,7 +134,7 @@ public class ReservaService {
             throw new IllegalArgumentException("Apenas o usuário que realizou a reserva pode fazer o check-in.");
         }
 
-        if (reserva.getStatus() != StatusOcorrencia.AGENDADO) {
+        if (reserva.getStatus() != StatusReserva.AGENDADO) {
             throw new IllegalArgumentException("Não é possível realizar check-in em uma reserva que não está agendada.");
         }
 
