@@ -1,3 +1,9 @@
+### Requisicoes criadas por IA para teste
+
+### ==========================================
+### 1. CADASTRO DE USUÁRIOS
+### ==========================================
+
 ### Cadastrar um Usuário Professor
 POST http://localhost:8080/api/usuarios
 Content-Type: application/json
@@ -19,6 +25,11 @@ Content-Type: application/json
   "senha": "senha123segura",
   "perfil": "ALUNO"
 }
+
+
+### ==========================================
+### 2. CADASTRO DE ESPAÇOS
+### ==========================================
 
 ### Cadastrar uma Sala de Estudo
 POST http://localhost:8080/api/espacos
@@ -42,7 +53,26 @@ Content-Type: application/json
   "recursos": "Computadores, projetor"
 }
 
-### Aluno reservando Sala de Estudo por 2 horas
+
+### ==========================================
+### 3. CONSULTA DE ESPAÇOS LIVRES
+### ==========================================
+
+### Buscar espaços livres por período
+POST http://localhost:8080/api/espacos/livres
+Content-Type: application/json
+
+{
+  "inicio": "2026-10-20T14:00:00",
+  "fim": "2026-10-20T16:00:00"
+}
+
+
+### ==========================================
+### 4. CRIAÇÃO DE RESERVAS
+### ==========================================
+
+### Aluno reservando Sala de Estudo por 2 horas (Sucesso)
 POST http://localhost:8080/api/reservas/avulsa
 Content-Type: application/json
 
@@ -53,8 +83,7 @@ Content-Type: application/json
   "dataFim": "2026-10-20T16:00:00"
 }
 
-### Aluno tentando reservar Laboratório
-# Erro
+### Aluno tentando reservar Laboratório (Deve dar Erro - Aluno só reserva Sala de Estudo)
 POST http://localhost:8080/api/reservas/avulsa
 Content-Type: application/json
 
@@ -65,16 +94,7 @@ Content-Type: application/json
   "dataFim": "2026-10-20T16:00:00"
 }
 
-### Buscar espaços livres
-POST http://localhost:8080/api/espacos/livres
-Content-Type: application/json
-
-{
-  "inicio": "2026-10-20T14:00:00",
-  "fim": "2026-10-20T16:00:00"
-}
-
-### Professor criando Reserva Recorrente
+### Professor criando Reserva Recorrente (Semanal por 1 mês)
 POST http://localhost:8080/api/reservas/recorrente
 Content-Type: application/json
 
@@ -86,21 +106,25 @@ Content-Type: application/json
   "dataLimite": "2026-12-03T21:00:00"
 }
 
-### Cancelar uma ocorrência enviando
-POST http://localhost:8080/api/reservas/ocorrencias/cancelar
+
+### ==========================================
+### 5. OPERAÇÕES NAS RESERVAS (CANCELAR / CHECK-IN)
+### ==========================================
+
+### Cancelar uma reserva (informando o ID da reserva)
+POST http://localhost:8080/api/reservas/cancelar
 Content-Type: application/json
 
 {
-  "ocorrenciaId": 1,
-  "usuarioId": 1
+  "reservaId": 1,
+  "usuarioId": 2
 }
 
-
 ### Realizar Check-in de uma reserva
-POST http://localhost:8080/api/reservas/ocorrencias/check-in
+POST http://localhost:8080/api/reservas/check-in
 Content-Type: application/json
 
 {
-  "ocorrenciaId": 3,
-  "usuarioId": 1
+  "reservaId": 1,
+  "usuarioId": 2
 }

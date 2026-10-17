@@ -21,11 +21,27 @@ public class Reserva {
     @JoinColumn(name = "espaco_id", nullable = false)
     private Espaco espaco;
 
+    @Column(name = "data_inicio", nullable = false)
+    private LocalDateTime dataInicio;
+
+    @Column(name = "data_fim", nullable = false)
+    private LocalDateTime dataFim;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private StatusOcorrencia status; // Pode manter o Enum StatusOcorrencia ou renomear se preferir
+
+    @Column(name = "check_in_realizado", nullable = false)
+    private boolean checkInRealizado = false;
+
+    @Column(nullable = false)
+    private boolean falta = false;
+
     @Column(nullable = false)
     private boolean recorrente = false;
 
     @Column(name = "status_aprovacao", nullable = false, length = 20)
-    private String statusAprovacao = "APROVADO"; // Pode ser PENDENTE para auditório (RF08)[cite: 2]
+    private String statusAprovacao = "APROVADO";
 
     @Column(name = "criado_em", nullable = false)
     private LocalDateTime criadoEm = LocalDateTime.now();

@@ -1,7 +1,6 @@
 package com.api_agendamentos.api_agendamentos.repository;
 
 import com.api_agendamentos.api_agendamentos.entity.Espaco;
-import com.api_agendamentos.api_agendamentos.entity.TipoEspaco;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,10 +16,10 @@ public interface EspacoRepository extends JpaRepository<Espaco, Long> {
         SELECT e FROM Espaco e
         WHERE e.bloqueado = FALSE
           AND e.id NOT IN (
-              SELECT o.espaco.id FROM Ocorrencia o
-              WHERE o.status = 'AGENDADO'
-                AND o.dataInicio < :fim
-                AND o.dataFim > :inicio
+              SELECT r.espaco.id FROM Reserva r
+              WHERE r.status = 'AGENDADO'
+                AND r.dataInicio < :fim
+                AND r.dataFim > :inicio
           )
     """)
     List<Espaco> buscarEspacosLivres(
