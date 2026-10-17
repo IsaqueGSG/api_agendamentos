@@ -65,7 +65,7 @@ Content-Type: application/json
   "dataFim": "2026-10-20T16:00:00"
 }
 
-### Buscar espaços livres enviando os parâmetros no corpo (JSON)
+### Buscar espaços livres
 POST http://localhost:8080/api/espacos/livres
 Content-Type: application/json
 
@@ -91,6 +91,16 @@ POST http://localhost:8080/api/reservas/ocorrencias/cancelar
 Content-Type: application/json
 
 {
-  "ocorrenciaId": 2,
+  "ocorrenciaId": 1,
+  "usuarioId": 1
+}
+
+
+### Realizar Check-in de uma reserva
+POST http://localhost:8080/api/reservas/ocorrencias/check-in
+Content-Type: application/json
+
+{
+  "ocorrenciaId": 3,
   "usuarioId": 1
 }

@@ -1,6 +1,7 @@
 package com.api_agendamentos.api_agendamentos.controller;
 
 import com.api_agendamentos.api_agendamentos.dto.CancelarOcorrenciaRequest;
+import com.api_agendamentos.api_agendamentos.dto.CheckInRequest;
 import com.api_agendamentos.api_agendamentos.dto.ReservaAvulsaRequest;
 import com.api_agendamentos.api_agendamentos.dto.ReservaRecorrenteRequest;
 import com.api_agendamentos.api_agendamentos.entity.Ocorrencia;
@@ -21,7 +22,6 @@ public class ReservaController {
     }
 
     @PostMapping("/avulsa")
-    @ResponseStatus(HttpStatus.CREATED)
     public Ocorrencia criarReservaAvulsa(@Valid @RequestBody ReservaAvulsaRequest req) {
         return service.criarReservaAvulsa(
                 req.usuarioId(),
@@ -32,7 +32,6 @@ public class ReservaController {
     }
 
     @PostMapping("/recorrente")
-    @ResponseStatus(HttpStatus.CREATED)
     public List<Ocorrencia> criarReservaRecorrente(@Valid @RequestBody ReservaRecorrenteRequest req) {
         return service.criarReservaRecorrente(
                 req.usuarioId(),
@@ -44,12 +43,16 @@ public class ReservaController {
     }
 
     @PostMapping("/ocorrencias/cancelar")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void cancelarOcorrencia(@Valid @RequestBody CancelarOcorrenciaRequest req) {
         service.cancelarOcorrencia(
                 req.ocorrenciaId(),
                 req.usuarioId()
         );
+    }
+
+    @PostMapping("/ocorrencias/check-in")
+    public void realizarCheckIn(@Valid @RequestBody CheckInRequest req) {
+        service.realizarCheckIn(req.ocorrenciaId(), req.usuarioId());
     }
 
 }

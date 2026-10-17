@@ -184,4 +184,34 @@ public class ReservaService {
         ocorrencia.setStatus(StatusOcorrencia.CANCELADO);
         ocorrenciaRepository.save(ocorrencia);
     }
+
+
+    @Transactional
+    public void realizarCheckIn(Long ocorrenciaId, Long usuarioId) {
+        Ocorrencia ocorrencia = ocorrenciaRepository.findById(ocorrenciaId)
+                .orElseThrow(() -> new RuntimeException("Ocorrência não encontrada."));
+
+        // Valida se o usuário é o dono da reserva
+        boolean ehDono = ocorrencia.getReserva().getUsuario().getId().equals(usuarioId);
+        if (!ehDono) {
+            throw new IllegalArgumentException("Apenas o usuário que realizou a reserva pode fazer o check-in.");
+        }
+
+        if (ocorrencia.getStatus() != StatusOcorrencia.AGENDADO) {
+            throw new IllegalArgumentException("Não é possível realizar check-in em uma ocorrência que não está agendada.");
+        }
+
+        if (ocorrencia.isCheckInRealizado()) {
+            throw new IllegalArgumentException("O check-in já foi realizado para esta ocorrência.");
+        }
+
+        // nao pode chek in depois do horario
+        LocalDateTime agora = LocalDateTime.now();
+        if (agora.isAfter(ocorrencia.getDataFim())) {
+            throw new IllegalArgumentException("O horário desta ocorrência já encerrou.");
+        }
+
+        ocorrencia.setCheckInRealizado(true);
+        ocorrenciaRepository.save(ocorrencia);
+    }
 }
