@@ -26,6 +26,17 @@ Content-Type: application/json
   "perfil": "ALUNO"
 }
 
+### Cadastrar um Gestor
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Carlos Gestor",
+  "email": "carlos@ifsp.edu.br",
+  "senha": "senha123segura",
+  "perfil": "GESTOR"
+}
+
 
 ### ==========================================
 ### 2. CADASTRO DE ESPAÇOS
@@ -51,6 +62,17 @@ Content-Type: application/json
   "tipo": "LABORATORIO",
   "capacidade": 30,
   "recursos": "Computadores, projetor"
+}
+
+### Cadastrar um Auditório (Exige aprovação de Gestor - RF08)
+POST http://localhost:8080/api/espacos
+Content-Type: application/json
+
+{
+  "nome": "Auditório Central",
+  "tipo": "AUDITORIO",
+  "capacidade": 150,
+  "recursos": "Projetor grande, som, microfone"
 }
 
 
@@ -90,11 +112,22 @@ Content-Type: application/json
 {
   "usuarioId": 2,
   "espacoId": 2,
-  "dataInicio": "2026-10-20T14:00:00",
-  "dataFim": "2026-10-20T16:00:00"
+  "dataInicio": "2026-11-20T14:00:00",
+  "dataFim": "2026-11-20T16:00:00"
 }
 
-### Professor criando Reserva Recorrente (Semanal por 1 mês)
+### Professor criando Reserva em Auditório
+POST http://localhost:8080/api/reservas/avulsa
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "espacoId": 3,
+  "dataInicio": "2026-11-25T14:00:00",
+  "dataFim": "2026-11-25T18:00:00"
+}
+
+### Professor criando Reserva Recorrente
 POST http://localhost:8080/api/reservas/recorrente
 Content-Type: application/json
 
@@ -108,7 +141,34 @@ Content-Type: application/json
 
 
 ### ==========================================
-### 5. OPERAÇÕES NAS RESERVAS (CANCELAR / CHECK-IN)
+### 5. APROVAÇÃO DE RESERVAS (GESTOR)
+### ==========================================
+
+### Listar reservas pendentes de aprovação
+GET http://localhost:8080/api/reservas/pendentes?usuarioId=3
+Content-Type: application/json
+
+### Gestor Aprovando uma Reserva Pendente
+POST http://localhost:8080/api/reservas/aprovar
+Content-Type: application/json
+
+{
+  "reservaId": 2,
+  "usuarioId": 3
+}
+
+### Gestor Rejeitando uma Reserva Pendente
+POST http://localhost:8080/api/reservas/rejeitar
+Content-Type: application/json
+
+{
+  "reservaId": 8,
+  "usuarioId": 3
+}
+
+
+### ==========================================
+### 6. OPERAÇÕES NAS RESERVAS (CANCELAR / CHECK-IN)
 ### ==========================================
 
 ### Cancelar uma reserva (informando o ID da reserva)

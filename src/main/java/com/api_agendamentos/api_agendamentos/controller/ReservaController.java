@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/reservas")
@@ -54,5 +55,24 @@ public class ReservaController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void realizarCheckIn(@Valid @RequestBody CheckInRequest req) {
         service.realizarCheckIn(req.reservaId(), req.usuarioId());
+    }
+
+
+    // rotas do gestor
+    @GetMapping("/pendentes")
+    public List<Reserva> listarPendentes(@RequestParam Long usuarioId) {
+        return service.listarPendentes(usuarioId);
+    }
+
+    @PostMapping("/aprovar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void aprovarReserva(@RequestBody Map<String, Long> request) {
+        service.gerenciarAprovacao(request.get("reservaId"), request.get("usuarioId"), true);
+    }
+
+    @PostMapping("/rejeitar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void rejeitarReserva(@RequestBody Map<String, Long> request) {
+        service.gerenciarAprovacao(request.get("reservaId"), request.get("usuarioId"), false);
     }
 }

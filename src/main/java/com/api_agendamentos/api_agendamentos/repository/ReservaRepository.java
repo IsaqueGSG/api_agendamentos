@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface ReservaRepository extends JpaRepository<Reserva, Long> {
@@ -16,6 +17,7 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
         FROM Reserva r
         WHERE r.espaco.id = :espacoId
           AND r.status = 'AGENDADO'
+          AND r.statusAprovacao = 'APROVADO'
           AND r.dataInicio < :fim
           AND r.dataFim > :inicio
     """)
@@ -33,4 +35,6 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
           AND r.dataInicio > CURRENT_TIMESTAMP
     """)
     long contarReservasFuturasUsuario(@Param("usuarioId") Long usuarioId);
+
+    List<Reserva> findByStatusAprovacao(String statusAprovacao);
 }

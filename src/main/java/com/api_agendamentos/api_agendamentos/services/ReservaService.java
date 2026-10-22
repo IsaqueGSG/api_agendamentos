@@ -34,6 +34,9 @@ public class ReservaService {
 
         validarRegrasComuns(inicio, fim, espaco, usuario);
 
+        // Se for AUDITORIO, exige aprovação do gestor
+        String statusAprovacaoInicial = (espaco.getTipo() == TipoEspaco.AUDITORIO) ? "PENDENTE" : "APROVADO";
+
         Reserva reserva = Reserva.builder()
                 .usuario(usuario)
                 .espaco(espaco)
@@ -41,7 +44,7 @@ public class ReservaService {
                 .dataFim(fim)
                 .status(StatusReserva.AGENDADO)
                 .recorrente(false)
-                .statusAprovacao("APROVADO")
+                .statusAprovacao(statusAprovacaoInicial)
                 .criadoEm(LocalDateTime.now())
                 .build();
 
@@ -188,4 +191,48 @@ public class ReservaService {
             throw new IllegalArgumentException("Já existe uma reserva agendada para este espaço neste horário.");
         }
     }
+
+
+    // Listar reservas pendentes de aprovação
+    public List<Reserva> listarPendentes(Long usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (usuario.getPerfil() != PerfilUsuario.GESTOR) {
+            throw new IllegalArgumentException("Apenas gestores podem visualizar reservas pendentes.");
+        }
+
+        return reservaRepository.findByStatusAprovacao("PENDENTE");
+    }
+
+    @Transactional
+    public void gerenciarAprovacao(Long reservaId, Long usuarioId, boolean aprovar) {
+        Reserva reserva = reservaRepository.findById(reservaId)
+                .orElseThrow(() -> new RuntimeException("Reserva não encontrada"));
+
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (usuario.getPerfil() != PerfilUsuario.GESTOR) {
+            throw new IllegalArgumentException("Apenas gestores podem aprovar ou rejeitar reservas.");
+        }
+
+        if (!"PENDENTE".equals(reserva.getStatusAprovacao())) {
+            throw new IllegalArgumentException("Esta reserva não está com status pendente de aprovação.");
+        }
+
+        if (aprovar) {
+            // Verifica se surgiu algum conflito no meio tempo antes de aprovar
+            if (reservaRepository.existeConflitoEspaco(reserva.getEspaco().getId(), reserva.getDataInicio(), reserva.getDataFim())) {
+                throw new IllegalArgumentException("Não é possível aprovar: há conflito de horário com outra reserva já aprovada.");
+            }
+            reserva.setStatusAprovacao("APROVADO");
+        } else {
+            reserva.setStatusAprovacao("REJEITADO");
+            reserva.setStatus(StatusReserva.CANCELADO); // Cancela a ocorrência se rejeitado
+        }
+
+        reservaRepository.save(reserva);
+    }
+
 }
