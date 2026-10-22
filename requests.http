@@ -188,3 +188,12 @@ Content-Type: application/json
   "reservaId": 1,
   "usuarioId": 2
 }
+
+### Relatório de Ocupação por Período
+GET http://localhost:8080/api/reservas/relatorios/ocupacao?usuarioId=3&inicio=2026-10-01T00:00:00&fim=2026-10-31T23:59:59
+
+### Relatório de Faltas
+GET http://localhost:8080/api/reservas/relatorios/faltas?usuarioId=3
+
+### Relatório de Reservas por Usuário Específico
+GET http://localhost:8080/api/reservas/relatorios/usuario?usuarioId=3&usuarioAlvoId=2

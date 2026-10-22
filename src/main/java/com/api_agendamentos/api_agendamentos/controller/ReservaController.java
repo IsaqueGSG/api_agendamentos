@@ -9,6 +9,8 @@ import com.api_agendamentos.api_agendamentos.services.ReservaService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -75,4 +77,27 @@ public class ReservaController {
     public void rejeitarReserva(@RequestBody Map<String, Long> request) {
         service.gerenciarAprovacao(request.get("reservaId"), request.get("usuarioId"), false);
     }
+
+    //relatorios
+    @GetMapping("/relatorios/ocupacao")
+    public List<Reserva> relatorioOcupacao(
+            @RequestParam Long usuarioId,
+            @RequestParam LocalDateTime inicio,
+            @RequestParam LocalDateTime fim) {
+        return service.relatorioOcupacao(usuarioId, inicio, fim);
+    }
+
+    @GetMapping("/relatorios/faltas")
+    public List<Reserva> relatorioFaltas(@RequestParam Long usuarioId) {
+        return service.relatorioFaltas(usuarioId);
+    }
+
+    @GetMapping("/relatorios/usuario")
+    public List<Reserva> relatorioPorUsuario(
+            @RequestParam Long usuarioId,
+            @RequestParam Long usuarioAlvoId) {
+        return service.relatorioPorUsuario(usuarioId, usuarioAlvoId);
+    }
+
+
 }

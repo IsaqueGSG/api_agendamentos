@@ -235,4 +235,32 @@ public class ReservaService {
         reservaRepository.save(reserva);
     }
 
+    // RF11
+    public List<Reserva> relatorioOcupacao(Long usuarioId, LocalDateTime inicio, LocalDateTime fim) {
+        validarGestor(usuarioId);
+        return reservaRepository.findByDataInicioBetween(inicio, fim);
+    }
+
+    // RF12
+    public List<Reserva> relatorioFaltas(Long usuarioId) {
+        validarGestor(usuarioId);
+        return reservaRepository.findByFaltaTrue();
+    }
+
+    // RF13
+    public List<Reserva> relatorioPorUsuario(Long usuarioIdSolicitante, Long usuarioAlvoId) {
+        validarGestor(usuarioIdSolicitante);
+        return reservaRepository.findByUsuarioId(usuarioAlvoId);
+    }
+
+    // validação de gestor
+    private void validarGestor(Long usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (usuario.getPerfil() != PerfilUsuario.GESTOR) {
+            throw new IllegalArgumentException("Acesso negado: apenas gestores podem gerar relatórios.");
+        }
+    }
+
 }

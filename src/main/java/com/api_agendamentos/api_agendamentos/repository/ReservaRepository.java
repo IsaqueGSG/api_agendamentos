@@ -37,4 +37,16 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
     long contarReservasFuturasUsuario(@Param("usuarioId") Long usuarioId);
 
     List<Reserva> findByStatusAprovacao(String statusAprovacao);
+
+    // RF11
+    List<Reserva> findByDataInicioBetween(LocalDateTime inicio, LocalDateTime fim);
+
+    // Buscar reservas por espaço e período
+    List<Reserva> findByEspacoIdAndDataInicioBetween(Long espacoId, LocalDateTime inicio, LocalDateTime fim);
+
+    // RF12
+    List<Reserva> findByFaltaTrue();
+
+    // RF13
+    List<Reserva> findByUsuarioId(Long usuarioId);
 }
