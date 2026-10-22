@@ -6,5 +6,8 @@ import java.time.LocalDateTime;
 
 public record EspacoGetRequest(
         @NotNull LocalDateTime inicio,
-        @NotNull LocalDateTime fim
+        @NotNull LocalDateTime fim,
+        TipoEspaco tipo,
+        Integer capacidadeMin,
+        String recurso
 ) {}

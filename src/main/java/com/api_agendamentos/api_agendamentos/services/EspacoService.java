@@ -37,9 +37,9 @@ public class EspacoService {
     }
 
     public List<EspacoResponse> buscarEspacosLivres(
-//            TipoEspaco tipo,
-//            Integer capacidadeMin,
-//            String recurso,
+            TipoEspaco tipo,
+            Integer capacidadeMin,
+            String recurso,
             LocalDateTime inicio,
             LocalDateTime fim
     ) {
@@ -48,9 +48,9 @@ public class EspacoService {
         }
 
         List<Espaco> espacos = repository.buscarEspacosLivres(
-//                tipo,
-//                capacidadeMin,
-//                recurso,
+                tipo,
+                capacidadeMin,
+                recurso,
                 inicio,
                 fim
         );
@@ -60,6 +60,8 @@ public class EspacoService {
                 .collect(Collectors.toList());
     }
 
+
+    //transforma em objeto com metodos da req
     private EspacoResponse mapearParaResponse(Espaco espaco) {
         return new EspacoResponse(
                 espaco.getId(),

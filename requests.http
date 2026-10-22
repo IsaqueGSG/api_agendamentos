@@ -1,40 +1,35 @@
-### Requisicoes criadas por IA para teste
-
 ### ==========================================
-### 1. CADASTRO DE USUÁRIOS
+### 1. CADASTRO DE USUÁRIOS (RF01 - Perfil automático pelo e-mail)
 ### ==========================================
 
-### Cadastrar um Usuário Professor
+### Cadastrar um Usuário Professor (O perfil 'PROFESSOR' será definido automaticamente pelo final '@ifsp.edu.br')
 POST http://localhost:8080/api/usuarios
-Content-Type: application/json
+Content-Typ1e: application/json
 
 {
   "nome": "Prof. Giovani",
   "email": "giovani@ifsp.edu.br",
-  "senha": "senha123segura",
-  "perfil": "PROFESSOR"
+  "senha": "senha123segura"
 }
 
-### Cadastrar um Aluno
+### Cadastrar um Aluno (O perfil 'ALUNO' será definido automaticamente pelo final '@aluno.ifsp.edu.br')
 POST http://localhost:8080/api/usuarios
 Content-Type: application/json
 
 {
   "nome": "Isaque Aluno",
   "email": "isaque@aluno.ifsp.edu.br",
-  "senha": "senha123segura",
-  "perfil": "ALUNO"
+  "senha": "senha123segura"
 }
 
-### Cadastrar um Gestor
+### Cadastrar um Gestor (ATENÇÃO: Conforme o enunciado da atividade, a conta do gestor vem pré-criada ou cadastrada. Caso tente cadastrar via API com outro domínio, deve retornar erro).
 POST http://localhost:8080/api/usuarios
 Content-Type: application/json
 
 {
   "nome": "Carlos Gestor",
   "email": "carlos@ifsp.edu.br",
-  "senha": "senha123segura",
-  "perfil": "GESTOR"
+  "senha": "senha123segura"
 }
 
 
@@ -77,16 +72,28 @@ Content-Type: application/json
 
 
 ### ==========================================
-### 3. CONSULTA DE ESPAÇOS LIVRES
+### 3. CONSULTA DE ESPAÇOS LIVRES COM FILTROS (RF05 Atualizado)
 ### ==========================================
 
-### Buscar espaços livres por período
+### Buscar espaços livres básicos por período
 POST http://localhost:8080/api/espacos/livres
 Content-Type: application/json
 
 {
   "inicio": "2026-10-20T14:00:00",
   "fim": "2026-10-20T16:00:00"
+}
+
+### Buscar espaços livres aplicando filtros avançados (Tipo, Capacidade Mínima e Recurso)
+POST http://localhost:8080/api/espacos/livres
+Content-Type: application/json
+
+{
+  "inicio": "2026-10-20T14:00:00",
+  "fim": "2026-10-20T16:00:00",
+  "tipo": "LABORATORIO",
+  "capacidadeMin": 20,
+  "recurso": "projetor"
 }
 
 
@@ -162,7 +169,7 @@ POST http://localhost:8080/api/reservas/rejeitar
 Content-Type: application/json
 
 {
-  "reservaId": 8,
+  "reservaId": 3,
   "usuarioId": 3
 }
 
@@ -181,6 +188,7 @@ Content-Type: application/json
 }
 
 ### Realizar Check-in de uma reserva
+### (Nota: Para passar com sucesso, a data/hora atual do seu computador precisa estar rigorosamente dentro de 15 minutos antes ou depois do horário de início da reserva criada)
 POST http://localhost:8080/api/reservas/check-in
 Content-Type: application/json
 
@@ -188,6 +196,11 @@ Content-Type: application/json
   "reservaId": 1,
   "usuarioId": 2
 }
+
+
+### ==========================================
+### 7. RELATÓRIOS DE GESTÃO
+### ==========================================
 
 ### Relatório de Ocupação por Período
 GET http://localhost:8080/api/reservas/relatorios/ocupacao?usuarioId=3&inicio=2026-10-01T00:00:00&fim=2026-10-31T23:59:59

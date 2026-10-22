@@ -146,10 +146,11 @@ public class ReservaService {
         }
 
         LocalDateTime agora = LocalDateTime.now();
-        LocalDateTime inicioPermitido = reserva.getDataInicio().minusMinutes(30);
+        LocalDateTime inicioPermitido = reserva.getDataInicio().minusMinutes(15);
+        LocalDateTime fimPermitido = reserva.getDataInicio().plusMinutes(15);
 
-        if (agora.isBefore(inicioPermitido)) {
-            throw new IllegalArgumentException("O check-in só pode ser realizado a partir de 30 minutos antes do horário de início.");
+        if (agora.isBefore(inicioPermitido) || agora.isAfter(fimPermitido)) {
+            throw new IllegalArgumentException("O check-in só pode ser realizado entre 15 minutos antes e 15 minutos depois do horário de início.");
         }
 
         if (agora.isAfter(reserva.getDataFim())) {
