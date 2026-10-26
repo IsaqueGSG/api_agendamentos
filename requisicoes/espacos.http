@@ -1,0 +1,67 @@
+### ==========================================
+### CADASTRO DE ESPAÇOS FÍSICOS (Requer Gestor ou utilizador autenticado)
+### ==========================================
+
+### 2.1 Cadastrar Sala de Estudo
+POST http://localhost:8080/api/espacos
+Content-Type: application/json
+Authorization: Bearer {{loginGestor.response.body.token}}
+
+{
+  "nome": "Sala de Estudo 01",
+  "tipo": "SALA_ESTUDO",
+  "capacidade": 6,
+  "recursos": "Quadro branco, tomada"
+}
+
+### 2.2 Cadastrar Laboratório
+POST http://localhost:8080/api/espacos
+Content-Type: application/json
+Authorization: Bearer {{loginGestor.response.body.token}}
+
+{
+  "nome": "Laboratório de Informática 02",
+  "tipo": "LABORATORIO",
+  "capacidade": 30,
+  "recursos": "Computadores, projetor"
+}
+
+### 2.3 Cadastrar Auditório (Exige aprovação posterior de Gestor)
+POST http://localhost:8080/api/espacos
+Content-Type: application/json
+Authorization: Bearer {{loginGestor.response.body.token}}
+
+{
+  "nome": "Auditório Central",
+  "tipo": "AUDITORIO",
+  "capacidade": 150,
+  "recursos": "Projetor grande, som, microfone"
+}
+
+
+### ==========================================
+### CONSULTA DE ESPAÇOS LIVRES
+### ==========================================
+
+### 2.4 Buscar espaços livres por período básico
+POST http://localhost:8080/api/espacos/livres
+Content-Type: application/json
+Authorization: Bearer {{loginAluno.response.body.token}}
+
+{
+  "inicio": "2026-10-20T14:00:00",
+  "fim": "2026-10-20T16:00:00"
+}
+
+### 2.5 Buscar espaços livres com filtros avançados
+POST http://localhost:8080/api/espacos/livres
+Content-Type: application/json
+Authorization: Bearer {{loginAluno.response.body.token}}
+
+{
+  "inicio": "2026-10-20T14:00:00",
+  "fim": "2026-10-20T16:00:00",
+  "tipo": "LABORATORIO",
+  "capacidadeMin": 20,
+  "recurso": "projetor"
+}

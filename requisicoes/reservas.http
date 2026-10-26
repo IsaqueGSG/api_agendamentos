@@ -1,0 +1,66 @@
+### ==========================================
+### CRIAÇÃO E OPERAÇÕES DE RESERVAS
+### ==========================================
+
+### 3.1 Aluno reserva Sala de Estudo por 2 horas (Sucesso)
+POST http://localhost:8080/api/reservas/avulsa
+Content-Type: application/json
+Authorization: Bearer {{loginAluno.response.body.token}}
+
+{
+  "espacoId": 1,
+  "dataInicio": "2026-10-20T14:00:00",
+  "dataFim": "2026-10-20T16:00:00"
+}
+
+### 3.2 Aluno tenta reservar Laboratório (Deve dar Erro - Restrição de perfil)
+POST http://localhost:8080/api/reservas/avulsa
+Content-Type: application/json
+Authorization: Bearer {{loginAluno.response.body.token}}
+
+{
+  "espacoId": 2,
+  "dataInicio": "2026-11-20T14:00:00",
+  "dataFim": "2026-11-20T16:00:00"
+}
+
+### 3.3 Professor cria Reserva em Auditório (Fica com status PENDENTE)
+POST http://localhost:8080/api/reservas/avulsa
+Content-Type: application/json
+Authorization: Bearer {{loginProfessor.response.body.token}}
+
+{
+  "espacoId": 3,
+  "dataInicio": "2026-11-25T14:00:00",
+  "dataFim": "2026-11-25T18:00:00"
+}
+
+### 3.4 Professor cria Reserva Recorrente (Semanal por até 6 meses)
+POST http://localhost:8080/api/reservas/recorrente
+Content-Type: application/json
+Authorization: Bearer {{loginProfessor.response.body.token}}
+
+{
+  "espacoId": 2,
+  "dataInicio": "2026-11-03T19:00:00",
+  "dataFim": "2026-11-03T21:00:00",
+  "dataLimite": "2026-12-03T21:00:00"
+}
+
+### 3.5 Realizar Check-in (Requer estar na janela de 15 min do horário de início)
+POST http://localhost:8080/api/reservas/check-in
+Content-Type: application/json
+Authorization: Bearer {{loginAluno.response.body.token}}
+
+{
+  "reservaId": 1
+}
+
+### 3.6 Cancelar uma reserva ativa
+POST http://localhost:8080/api/reservas/cancelar
+Content-Type: application/json
+Authorization: Bearer {{loginAluno.response.body.token}}
+
+{
+  "reservaId": 1
+}

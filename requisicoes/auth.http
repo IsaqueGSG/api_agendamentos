@@ -1,0 +1,68 @@
+### ==========================================
+### 1. CADASTRO DE UTILIZADORES
+### ==========================================
+
+### 1.1 Cadastrar Professor (Perfil automático: PROFESSOR)
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Prof. Giovani",
+  "email": "giovani@ifsp.edu.br",
+  "senha": "senha123segura"
+}
+
+### 1.2 Cadastrar Aluno (Perfil automático: ALUNO)
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Isaque Aluno",
+  "email": "isaque@aluno.ifsp.edu.br",
+  "senha": "senha123segura"
+}
+
+### 1.3 Cadastrar Gestor
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Carlos Gestor",
+  "email": "carlos@ifsp.edu.br",
+  "senha": "senha123segura"
+}
+
+
+### ==========================================
+### 2. LOGIN (Gerar Tokens JWT)
+### ==========================================
+
+### 2.1 Login do Professor (Copie o token gerado para usar nos outros ficheiros)
+# @name loginProfessor
+POST http://localhost:8080/api/usuarios/login
+Content-Type: application/json
+
+{
+  "email": "giovani@ifsp.edu.br",
+  "senha": "senha123segura"
+}
+
+### 2.2 Login do Aluno
+# @name loginAluno
+POST http://localhost:8080/api/usuarios/login
+Content-Type: application/json
+
+{
+  "email": "isaque@aluno.ifsp.edu.br",
+  "senha": "senha123segura"
+}
+
+### 2.3 Login do Gestor
+# @name loginGestor
+POST http://localhost:8080/api/usuarios/login
+Content-Type: application/json
+
+{
+  "email": "carlos@ifsp.edu.br",
+  "senha": "senha123segura"
+}

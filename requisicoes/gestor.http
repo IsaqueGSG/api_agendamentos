@@ -1,0 +1,46 @@
+### ==========================================
+### GESTÃO E RELATÓRIOS (EXCLUSIVO GESTOR)
+### ==========================================
+
+### 4.1 Listar reservas pendentes de aprovação
+GET http://localhost:8080/api/reservas/pendentes
+Content-Type: application/json
+Authorization: Bearer {{loginGestor.response.body.token}}
+
+### 4.2 Gestor Aprova uma Reserva Pendente
+POST http://localhost:8080/api/reservas/aprovar
+Content-Type: application/json
+Authorization: Bearer {{loginGestor.response.body.token}}
+
+{
+  "reservaId": 2
+}
+
+### 4.3 Gestor Rejeita uma Reserva Pendente
+POST http://localhost:8080/api/reservas/rejeitar
+Content-Type: application/json
+Authorization: Bearer {{loginGestor.response.body.token}}
+
+{
+  "reservaId": 3
+}
+
+
+### ==========================================
+### RELATÓRIOS GERENCIAIS
+### ==========================================
+
+### 4.4 Relatório de Ocupação por Período
+GET http://localhost:8080/api/reservas/relatorios/ocupacao?inicio=2026-10-01T00:00:00&fim=2026-10-31T23:59:59
+Content-Type: application/json
+Authorization: Bearer {{loginGestor.response.body.token}}
+
+### 4.5 Relatório de Faltas
+GET http://localhost:8080/api/reservas/relatorios/faltas
+Content-Type: application/json
+Authorization: Bearer {{loginGestor.response.body.token}}
+
+### 4.6 Relatório de Reservas por Utilizador Específico (Ex: Alvo ID 2)
+GET http://localhost:8080/api/reservas/relatorios/usuario?usuarioAlvoId=2
+Content-Type: application/json
+Authorization: Bearer {{loginGestor.response.body.token}}
