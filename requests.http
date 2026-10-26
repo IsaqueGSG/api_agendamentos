@@ -1,10 +1,11 @@
 ### ==========================================
-### 1. CADASTRO DE USUÁRIOS (RF01 - Perfil automático pelo e-mail)
+### PASSO 1: CADASTRO DE USUÁRIOS
 ### ==========================================
 
-### Cadastrar um Usuário Professor (O perfil 'PROFESSOR' será definido automaticamente pelo final '@ifsp.edu.br')
+### 1.1 Cadastrar Professor (Perfil automático: PROFESSOR)
+# @name cadProfessor
 POST http://localhost:8080/api/usuarios
-Content-Typ1e: application/json
+Content-Type: application/json
 
 {
   "nome": "Prof. Giovani",
@@ -12,7 +13,8 @@ Content-Typ1e: application/json
   "senha": "senha123segura"
 }
 
-### Cadastrar um Aluno (O perfil 'ALUNO' será definido automaticamente pelo final '@aluno.ifsp.edu.br')
+### 1.2 Cadastrar Aluno (Perfil automático: ALUNO)
+# @name cadAluno
 POST http://localhost:8080/api/usuarios
 Content-Type: application/json
 
@@ -22,7 +24,8 @@ Content-Type: application/json
   "senha": "senha123segura"
 }
 
-### Cadastrar um Gestor (ATENÇÃO: Conforme o enunciado da atividade, a conta do gestor vem pré-criada ou cadastrada. Caso tente cadastrar via API com outro domínio, deve retornar erro).
+### 1.3 Cadastrar Gestor (Perfil automático / Domínio permitido)
+# @name cadGestor
 POST http://localhost:8080/api/usuarios
 Content-Type: application/json
 
@@ -34,10 +37,46 @@ Content-Type: application/json
 
 
 ### ==========================================
-### 2. CADASTRO DE ESPAÇOS
+### PASSO 2: AUTENTICAÇÃO (LOGIN & TOKENS JWT)
+### ==========================================
+# (Execute estes requests para obter os tokens que protegem as rotas abaixo)
+
+### 2.1 Login do Professor
+# @name loginProfessor
+POST http://localhost:8080/api/usuarios/login
+Content-Type: application/json
+
+{
+  "email": "giovani@ifsp.edu.br",
+  "senha": "senha123segura"
+}
+
+### 2.2 Login do Aluno
+# @name loginAluno
+POST http://localhost:8080/api/usuarios/login
+Content-Type: application/json
+
+{
+  "email": "isaque@aluno.ifsp.edu.br",
+  "senha": "senha123segura"
+}
+
+### 2.3 Login do Gestor
+# @name loginGestor
+POST http://localhost:8080/api/usuarios/login
+Content-Type: application/json
+
+{
+  "email": "carlos@ifsp.edu.br",
+  "senha": "senha123segura"
+}
+
+
+### ==========================================
+### PASSO 3: CADASTRO DE ESPAÇOS FÍSICOS
 ### ==========================================
 
-### Cadastrar uma Sala de Estudo
+### 3.1 Cadastrar Sala de Estudo
 POST http://localhost:8080/api/espacos
 Content-Type: application/json
 
@@ -48,7 +87,7 @@ Content-Type: application/json
   "recursos": "Quadro branco, tomada"
 }
 
-### Cadastrar um Laboratório
+### 3.2 Cadastrar Laboratório
 POST http://localhost:8080/api/espacos
 Content-Type: application/json
 
@@ -59,7 +98,7 @@ Content-Type: application/json
   "recursos": "Computadores, projetor"
 }
 
-### Cadastrar um Auditório (Exige aprovação de Gestor - RF08)
+### 3.3 Cadastrar Auditório (Exige aprovação de Gestor)
 POST http://localhost:8080/api/espacos
 Content-Type: application/json
 
@@ -72,10 +111,10 @@ Content-Type: application/json
 
 
 ### ==========================================
-### 3. CONSULTA DE ESPAÇOS LIVRES COM FILTROS (RF05 Atualizado)
+### PASSO 4: CONSULTA DE ESPAÇOS LIVRES
 ### ==========================================
 
-### Buscar espaços livres básicos por período
+### 4.1 Buscar espaços livres por período
 POST http://localhost:8080/api/espacos/livres
 Content-Type: application/json
 
@@ -84,7 +123,7 @@ Content-Type: application/json
   "fim": "2026-10-20T16:00:00"
 }
 
-### Buscar espaços livres aplicando filtros avançados (Tipo, Capacidade Mínima e Recurso)
+### 4.2 Buscar espaços livres com filtros avançados
 POST http://localhost:8080/api/espacos/livres
 Content-Type: application/json
 
@@ -98,10 +137,10 @@ Content-Type: application/json
 
 
 ### ==========================================
-### 4. CRIAÇÃO DE RESERVAS
+### PASSO 5: CRIAÇÃO DE RESERVAS
 ### ==========================================
 
-### Aluno reservando Sala de Estudo por 2 horas (Sucesso)
+### 5.1 Aluno reservando Sala de Estudo por 2 horas (Sucesso)
 POST http://localhost:8080/api/reservas/avulsa
 Content-Type: application/json
 
@@ -112,7 +151,7 @@ Content-Type: application/json
   "dataFim": "2026-10-20T16:00:00"
 }
 
-### Aluno tentando reservar Laboratório (Deve dar Erro - Aluno só reserva Sala de Estudo)
+### 5.2 Aluno tentando reservar Laboratório (Deve dar Erro - Restrição de perfil)
 POST http://localhost:8080/api/reservas/avulsa
 Content-Type: application/json
 
@@ -123,7 +162,7 @@ Content-Type: application/json
   "dataFim": "2026-11-20T16:00:00"
 }
 
-### Professor criando Reserva em Auditório
+### 5.3 Professor criando Reserva em Auditório (Fica como PENDENTE)
 POST http://localhost:8080/api/reservas/avulsa
 Content-Type: application/json
 
@@ -134,7 +173,7 @@ Content-Type: application/json
   "dataFim": "2026-11-25T18:00:00"
 }
 
-### Professor criando Reserva Recorrente
+### 5.4 Professor criando Reserva Recorrente (Semanal por até 6 meses)
 POST http://localhost:8080/api/reservas/recorrente
 Content-Type: application/json
 
@@ -148,14 +187,14 @@ Content-Type: application/json
 
 
 ### ==========================================
-### 5. APROVAÇÃO DE RESERVAS (GESTOR)
+### PASSO 6: APROVAÇÃO DE RESERVAS (GESTOR)
 ### ==========================================
 
-### Listar reservas pendentes de aprovação
+### 6.1 Listar reservas pendentes de aprovação
 GET http://localhost:8080/api/reservas/pendentes?usuarioId=3
 Content-Type: application/json
 
-### Gestor Aprovando uma Reserva Pendente
+### 6.2 Gestor Aprovando uma Reserva Pendente
 POST http://localhost:8080/api/reservas/aprovar
 Content-Type: application/json
 
@@ -164,7 +203,7 @@ Content-Type: application/json
   "usuarioId": 3
 }
 
-### Gestor Rejeitando uma Reserva Pendente
+### 6.3 Gestor Rejeitando uma Reserva Pendente
 POST http://localhost:8080/api/reservas/rejeitar
 Content-Type: application/json
 
@@ -175,20 +214,10 @@ Content-Type: application/json
 
 
 ### ==========================================
-### 6. OPERAÇÕES NAS RESERVAS (CANCELAR / CHECK-IN)
+### PASSO 7: OPERAÇÕES NAS RESERVAS (CHECK-IN / CANCELAR)
 ### ==========================================
 
-### Cancelar uma reserva (informando o ID da reserva)
-POST http://localhost:8080/api/reservas/cancelar
-Content-Type: application/json
-
-{
-  "reservaId": 1,
-  "usuarioId": 2
-}
-
-### Realizar Check-in de uma reserva
-### (Nota: Para passar com sucesso, a data/hora atual do seu computador precisa estar rigorosamente dentro de 15 minutos antes ou depois do horário de início da reserva criada)
+### 7.1 Realizar Check-in (Requer estar na janela de 15 min do horário de início)
 POST http://localhost:8080/api/reservas/check-in
 Content-Type: application/json
 
@@ -197,16 +226,28 @@ Content-Type: application/json
   "usuarioId": 2
 }
 
+### 7.2 Cancelar uma reserva ativa
+POST http://localhost:8080/api/reservas/cancelar
+Content-Type: application/json
+
+{
+  "reservaId": 1,
+  "usuarioId": 2
+}
+
 
 ### ==========================================
-### 7. RELATÓRIOS DE GESTÃO
+### PASSO 8: RELATÓRIOS GERENCIAIS (EXCLUSIVO GESTOR)
 ### ==========================================
 
-### Relatório de Ocupação por Período
+### 8.1 Relatório de Ocupação por Período
 GET http://localhost:8080/api/reservas/relatorios/ocupacao?usuarioId=3&inicio=2026-10-01T00:00:00&fim=2026-10-31T23:59:59
+Content-Type: application/json
 
-### Relatório de Faltas
+### 8.2 Relatório de Faltas
 GET http://localhost:8080/api/reservas/relatorios/faltas?usuarioId=3
+Content-Type: application/json
 
-### Relatório de Reservas por Usuário Específico
+### 8.3 Relatório de Reservas por Usuário Específico
 GET http://localhost:8080/api/reservas/relatorios/usuario?usuarioId=3&usuarioAlvoId=2
+Content-Type: application/json

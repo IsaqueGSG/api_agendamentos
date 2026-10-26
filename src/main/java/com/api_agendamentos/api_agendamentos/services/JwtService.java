@@ -12,7 +12,6 @@ import java.util.Base64;
 
 /**
  * Gera tokens JWT (HS256) que identificam o usuário e o perfil.
- * Claims: sub (id do usuário), email, perfil, iat e exp.
  */
 @Service
 public class JwtService {
